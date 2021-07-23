@@ -13,6 +13,10 @@ import { Text } from '../../selectors/Text';
 import { Video } from '../../selectors/Video';
 import { Form } from 'components/selectors/Form/Form';
 import {FormTextInput} from 'components/selectors/FormTextInput/FormTextInput';
+import { FormRadioButton } from 'components/selectors/FormRadioButton/FormRadioButton';
+import { FormRadioGroup } from 'components/selectors/FormRadioGroup/FormRadioGroup';
+import { FormCheckbox } from 'components/selectors/FormCheckbox/FormCheckbox';
+import { FormSlider } from 'components/selectors/FormSlider/FormSlider';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -66,7 +70,7 @@ export const Toolbox = () => {
 
           <div
           ref = {(ref) => 
-          create(ref, <Form>nesto</Form>)
+          create(ref, <Form></Form>)
           }>
           <Tooltip title="Form" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>
@@ -77,9 +81,52 @@ export const Toolbox = () => {
 
           <div
           ref = {(ref) => 
-          create(ref, <FormTextInput>nesto</FormTextInput>)
+          create(ref, <FormTextInput></FormTextInput>)
           }>
           <Tooltip title="FormTextInput" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+          <div
+          ref = {(ref) => 
+          create(ref, <FormRadioGroup></FormRadioGroup>)
+          }>
+          <Tooltip title="FormRadioGroup" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
+          <div
+          ref = {(ref) => 
+          create(ref, <FormRadioButton></FormRadioButton>)
+          }>
+          <Tooltip title="FormRadioButton" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
+          <div
+          ref = {(ref) => 
+          create(ref, <FormCheckbox></FormCheckbox>)
+          }>
+          <Tooltip title="FormCheckbox" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
+          <div
+          ref = {(ref) => 
+          create(ref, <FormSlider></FormSlider>)
+          }>
+          <Tooltip title="FormSlider" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>
               <SquareSvg />
             </Item>
