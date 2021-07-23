@@ -11,6 +11,8 @@ import { Button } from '../../selectors/Button';
 import { Container } from '../../selectors/Container';
 import { Text } from '../../selectors/Text';
 import { Video } from '../../selectors/Video';
+import { Form } from 'components/selectors/Form/Form';
+import {FormTextInput} from 'components/selectors/FormTextInput/FormTextInput';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -60,6 +62,30 @@ export const Toolbox = () => {
             )
           }
         >
+
+
+          <div
+          ref = {(ref) => 
+          create(ref, <Form>nesto</Form>)
+          }>
+          <Tooltip title="Form" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
+          <div
+          ref = {(ref) => 
+          create(ref, <FormTextInput>nesto</FormTextInput>)
+          }>
+          <Tooltip title="FormTextInput" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
           <Tooltip title="Container" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>
               <SquareSvg />
@@ -90,6 +116,7 @@ export const Toolbox = () => {
               <YoutubeSvg />
             </Item>
           </Tooltip>
+    
         </div>
       </div>
     </ToolboxDiv>

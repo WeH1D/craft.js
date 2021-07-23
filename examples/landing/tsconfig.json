@@ -23,6 +23,6 @@
     "noImplicitAny": false,
     "strictNullChecks": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/selectors/Form/Custom.jsx"],
   "exclude": ["node_modules"]
 }
