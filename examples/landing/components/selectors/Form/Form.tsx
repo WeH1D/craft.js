@@ -3,10 +3,14 @@ import React from 'react'
 import { useNode } from '@craftjs/core'
 import { useFormik } from 'formik';
 import { FormSettings } from './FormSettings';
+import { Save } from '@material-ui/icons';
 
 
 var formValues = {
-    values : {}
+    values : {},
+    edit: ()=>{edit()},
+    save: ()=>{save()},
+    submit: ()=>{submitForm()},
 }
 
 const defaultProps = {
@@ -31,7 +35,7 @@ export const FormCanvas = ({children}) => {
   const formik = useFormik({
     initialValues: formValues.values,
     onSubmit: values => {
-      alert(JSON.stringify(formValues.values, null, 2));
+      submitForm(); 
     },
   });
 
@@ -46,7 +50,6 @@ export const FormCanvas = ({children}) => {
          <MyContext.Provider value={formValues}>
           <form id="forma" onSubmit={formik.handleSubmit}>
             {children} 
-            <button type="submit">Submit</button>
           </form>
           </MyContext.Provider>
     </div>
@@ -73,3 +76,13 @@ Form.craft = {
     toolbar: FormSettings,
   },
 };
+
+function edit(){
+  alert("EDITED  " + JSON.stringify(formValues.values, null, 2));
+}
+function save(){
+  alert("SAVED  " + JSON.stringify(formValues.values, null, 2));
+}
+function submitForm(){
+  alert("SUBMITANO  " + JSON.stringify(formValues.values, null, 2));
+}

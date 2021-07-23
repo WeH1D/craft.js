@@ -13,6 +13,7 @@ import { Text } from '../../selectors/Text';
 import { Video } from '../../selectors/Video';
 import { Form } from 'components/selectors/Form/Form';
 import {FormTextInput} from 'components/selectors/FormTextInput/FormTextInput';
+import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -85,6 +86,18 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
           </div>
+
+          <div
+          ref = {(ref) => 
+          create(ref, <FloatingActionButton>nesto</FloatingActionButton>)
+          }>
+          <Tooltip title="FloatingActionButton" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+          </div>
+
 
           <Tooltip title="Container" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>
