@@ -13,6 +13,7 @@ import { Custom3, Custom3BtnDrop } from '../components/selectors/Custom3';
 import { Video } from '../components/selectors/Video';
 import  {Form, FormCanvas}  from '../components/selectors/Form/Form';
 import {FormTextInput} from '../components/selectors/FormTextInput/FormTextInput';
+import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 
 const theme = createMuiTheme({
   typography: {
@@ -54,6 +55,7 @@ function App() {
             Form,
             FormCanvas,
             FormTextInput,
+            FloatingActionButton
           }}
           enabled={false}
           onRender={RenderNode}
@@ -68,8 +70,7 @@ function App() {
                 background={{ r: 255, g: 255, b: 255, a: 1 }}
                 padding={['40', '40', '40', '40']}
                 custom={{ displayName: 'App' }}
-              >
-              </Element>
+              ></Element>
             </Frame>
           </Viewport>
         </Editor>
