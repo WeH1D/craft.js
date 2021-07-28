@@ -6,6 +6,12 @@ import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 export const FormSettings = () => {
   return (
     <React.Fragment>
+        <ToolbarSection
+        title="Settigns"
+        props={['contextName']}
+      >
+        <ToolbarItem propKey="contextName" type="text" label="Context" />
+      </ToolbarSection>
       <ToolbarSection
         title="Dimensions"
         props={['width', 'height']}

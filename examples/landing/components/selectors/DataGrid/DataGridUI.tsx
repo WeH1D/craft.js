@@ -2,11 +2,12 @@ import React from 'react'
 import { useNode } from '@craftjs/core'
 import { useContext } from 'react'
 import { formContext } from '../Form/Form'
-import { FormTextInputSettings } from './FormTextInputSettings'
 import { TextField } from '@material-ui/core'
 import {globalContext} from 'utils/Context/context'
+import { DataGrid, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
+import { DataGridUISettings } from './DataGridUISettings'
 
-export type FormTextInputProps = {
+export type DataGridUIProps = {
   fieldName: string;
   fieldType: string;
   fieldLabel: string;
@@ -47,7 +48,7 @@ const defaultProps = {
   height: 'auto',
 };
 
-export const FormTextInput = (props: Partial<FormTextInputProps>) => {
+export const DataGridUI = (props: Partial<DataGridUIProps>) => {
 
   props = {
     ...defaultProps,
@@ -73,11 +74,58 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
   const { connectors: { connect, drag } } = useNode();
   var context = useContext(formContext)
   const Gcontext = useContext(globalContext)
+
+  const columns: GridColDef[] = [
+    { field: 'id', headerName: 'ID', width: 120 },
+    {
+      field: 'firstName',
+      headerName: 'First name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'age',
+      headerName: 'Age',
+      type: 'number',
+      width: 110,
+      editable: true,
+    },
+    {
+      field: 'fullName',
+      headerName: 'Full name',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.getValue(params.id, 'firstName') || ''} ${
+          params.getValue(params.id, 'lastName') || ''
+        }`,
+    },
+  ];
+  
+  const rows = [
+    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  ];
+
   return (
-    <TextField
-      ref={ref => connect(drag(ref))}
-       style={{
-        justifyContent,
+    <div style={{ 
+      height: 400, 
+      width: '100%',
+      justifyContent,
         alignItems,
         background: `rgba(${Object.values(background)})`,
         color: `rgba(${Object.values(color)})`,
@@ -88,36 +136,24 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
             ? 'none'
             : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
         borderRadius: `${radius}px`,
-        flex: fillSpace === 'yes' ? 1 : 'unset',
-        width: `${width}%`,
-        height: `${height}%`,
-      }}
-      fullWidth
-      variant="outlined"
-      label= {fieldLabel}
-      type={fieldType}
-      onChange={a => {
-        if(Gcontext[context["contextName"]] != null){
-        Gcontext[context["contextName"]].values = {
-          ...Gcontext[context["contextName"]].values,
-          [fieldName]: a.target.value
-        }
-        console.log("Kontekst: " + context["contextName"])
-        console.log(Gcontext[context["contextName"]].values)
-        Gcontext[context["contextName"]].func()
-      }
-      }}
-    />
+        flex: fillSpace === 'yes' ? 1 : 'unset', }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        disableSelectionOnClick
+      />
+    </div>
   )
 }
 
-FormTextInput.craft = {
-  displayName: 'Form text input',
+DataGridUI.craft = {
+  displayName: 'Data grid',
   rules: {
     canDrag: () => true,
   },
   props: defaultProps,
   related: {
-    toolbar: FormTextInputSettings
+    toolbar: DataGridUISettings
   },
 };

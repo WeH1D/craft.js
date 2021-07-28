@@ -1,17 +1,32 @@
 import { Element } from '@craftjs/core'
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNode } from '@craftjs/core'
 import { useFormik } from 'formik';
 import { FormSettings } from './FormSettings';
 import { Save } from '@material-ui/icons';
+import { Resizer } from '../Resizer';
+import {globalContext} from 'utils/Context/context'
 
-
-var formValues = {
-    values : {},
-    edit: ()=>{edit()},
-    save: ()=>{save()},
-    submit: ()=>{submitForm()},
-}
+export type ContainerProps = {
+  background: Record<'r' | 'g' | 'b' | 'a', number>;
+  color: Record<'r' | 'g' | 'b' | 'a', number>;
+  flexDirection: string;
+  alignItems: string;
+  justifyContent: string;
+  fillSpace: string;
+  width: string;
+  height: string;
+  padding: string[];
+  margin: string[];
+  marginTop: number;
+  marginLeft: number;
+  marginBottom: number;
+  marginRight: number;
+  shadow: number;
+  children: React.ReactNode;
+  radius: number;
+  contextName: string;
+};
 
 const defaultProps = {
   flexDirection: 'column',
@@ -20,54 +35,82 @@ const defaultProps = {
   fillSpace: 'no',
   padding: ['0', '0', '0', '0'],
   margin: ['0', '0', '0', '0'],
-  background: { r: 255, g: 255, b: 255, a: 1 },
+  background: { r: 220, g: 220, b: 220, a: 1 },
   color: { r: 0, g: 0, b: 0, a: 1 },
   shadow: 0,
   radius: 0,
   width: '100%',
   height: 'auto',
+  contextName: ""
 };
 
-export const MyContext = React.createContext(formValues)
+export const formContext = React.createContext({})
 
-export const FormCanvas = ({children}) => {
-
+export const Form = (props: Partial<ContainerProps>) => {
+  props = {
+    ...defaultProps,
+    ...props,
+  };
+  const {
+    flexDirection,
+    alignItems,
+    justifyContent,
+    fillSpace,
+    background,
+    color,
+    padding,
+    margin,
+    shadow,
+    radius,
+    children,
+    contextName
+  } = props;
+  const { connectors: { connect, drag } } = useNode();
+  const context = useContext(globalContext)
   const formik = useFormik({
-    initialValues: formValues.values,
+    initialValues: context[contextName] == null ? null : context[contextName].values,
     onSubmit: values => {
-      submitForm(); 
+      context[contextName].register;
     },
   });
 
-  const { connectors: {connect}} = useNode();
+  var formValues = {
+    contextName: contextName
+  }
+
+  console.log("globalni iz forme " + JSON.stringify(context))
   return (
-    <div ref={connect} className="text-only"
-    style={{
-      background:'lightblue',
-      width:'300px',
-      height:'500px'
+    <Resizer
+      propKey={{ width: 'width', height: 'height' }}
+      style={{
+        justifyContent,
+        flexDirection,
+        alignItems,
+        background: `rgba(${Object.values(background)})`,
+        color: `rgba(${Object.values(color)})`,
+        padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
+        margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
+        boxShadow:
+          shadow === 0
+            ? 'none'
+            : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
+        borderRadius: `${radius}px`,
+        flex: fillSpace === 'yes' ? 1 : 'unset',
       }}>
-         <MyContext.Provider value={formValues}>
-          <form id="forma" onSubmit={formik.handleSubmit}>
-            {children} 
+       <formContext.Provider value={formValues}>
+          <form id="forma" onSubmit={formik.handleSubmit}
+          style={{
+            width:"100%"
+          }}>
+            {children}
           </form>
-          </MyContext.Provider>
-    </div>
+        </formContext.Provider>
+    </Resizer>
   )
 }
 
-export const Form = () => {
-   const {connectors: {connect, drag}} = useNode();
-    return (
-      <div ref={connect}>
-        <Element id="customdiv" is={FormCanvas} canvas>
-        </Element>
-      </div>
-    )
-}
-
 Form.craft = {
-  displayName: 'Custom',
+  displayName: 'Form',
   rules: {
     canDrag: () => true,
   },
@@ -77,12 +120,12 @@ Form.craft = {
   },
 };
 
-function edit(){
-  alert("EDITED  " + JSON.stringify(formValues.values, null, 2));
-}
-function save(){
-  alert("SAVED  " + JSON.stringify(formValues.values, null, 2));
-}
-function submitForm(){
-  alert("SUBMITANO  " + JSON.stringify(formValues.values, null, 2));
-}
+// function edit() {
+//   alert("EDITED  " + JSON.stringify(formValues.values, null, 2));
+// }
+// function save() {
+//   alert("SAVED  " + JSON.stringify(formValues.values, null, 2));
+// }
+// function submitForm() {
+//   alert("SUBMITANO  " + JSON.stringify(formValues.values, null, 2));
+// }

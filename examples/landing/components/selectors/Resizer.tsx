@@ -194,7 +194,9 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
         acc[key] = active && inNodeContext;
         return acc;
       }, {})}
-      className={cx([
+      className={
+        "responsive " + 
+        cx([
         {
           'm-auto': isRootNode,
           flex: true,

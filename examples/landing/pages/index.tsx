@@ -3,6 +3,8 @@ import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { NextSeo } from 'next-seo';
 import React from 'react';
+import {globalContext} from 'utils/Context/context'
+import { useContext } from 'react';
 
 import { Viewport, RenderNode } from '../components/editor';
 import { Container, Text } from '../components/selectors';
@@ -11,7 +13,7 @@ import { Custom1, OnlyButtons } from '../components/selectors/Custom1';
 import { Custom2, Custom2VideoDrop } from '../components/selectors/Custom2';
 import { Custom3, Custom3BtnDrop } from '../components/selectors/Custom3';
 import { Video } from '../components/selectors/Video';
-import  {Form, FormCanvas}  from '../components/selectors/Form/Form';
+import  {Form}  from '../components/selectors/Form/Form';
 import {FormTextInput} from '../components/selectors/FormTextInput/FormTextInput';
 import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 
@@ -28,6 +30,19 @@ const theme = createMuiTheme({
 });
 
 function App() {
+
+  const context = useContext(globalContext)
+
+    context["registration"] = {
+    values: {},
+    func: (a) => {register(a)},
+    }
+
+  context["login"] = {
+    values: {},
+    func: (a) => {login(a)},
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div className="h-full h-screen">
@@ -53,7 +68,6 @@ function App() {
             Button,
             Video,
             Form,
-            FormCanvas,
             FormTextInput,
             FloatingActionButton
           }}
@@ -65,8 +79,8 @@ function App() {
               <Element
                 canvas
                 is={Container}
-                width="800px"
-                height="auto"
+                width="80%"
+                height="500px"
                 background={{ r: 255, g: 255, b: 255, a: 1 }}
                 padding={['40', '40', '40', '40']}
                 custom={{ displayName: 'App' }}
@@ -77,6 +91,14 @@ function App() {
       </div>
     </ThemeProvider>
   );
+}
+
+function register(a){
+  console.log("registrovano!! --- " + a)
+}
+
+function login(a){
+  console.log("logovano!! --- " + a)
 }
 
 export default App;

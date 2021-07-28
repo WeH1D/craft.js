@@ -4,6 +4,7 @@ import { ContainerSettings } from './ContainerSettings';
 
 import { Resizer } from '../Resizer';
 
+
 export type ContainerProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
   color: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -25,7 +26,7 @@ export type ContainerProps = {
 };
 
 const defaultProps = {
-  flexDirection: 'column',
+  flexDirection: 'row',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   fillSpace: 'no',
@@ -60,10 +61,11 @@ export const Container = (props: Partial<ContainerProps>) => {
   return (
     <Resizer
       propKey={{ width: 'width', height: 'height' }}
+      //className = "responsive"
       style={{
         justifyContent,
-        flexDirection,
         alignItems,
+        flexDirection : flexDirection,
         background: `rgba(${Object.values(background)})`,
         color: `rgba(${Object.values(color)})`,
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
@@ -76,7 +78,7 @@ export const Container = (props: Partial<ContainerProps>) => {
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}
     >
-      {children}
+        {children}  
     </Resizer>
   );
 };
