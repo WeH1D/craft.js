@@ -19,6 +19,8 @@ import { FormCheckbox } from 'components/selectors/FormCheckbox/FormCheckbox';
 import { FormSlider } from 'components/selectors/FormSlider/FormSlider';
 import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 import { DataGridUI } from 'components/selectors/DataGrid/DataGridUI';
+import { TabUI } from 'components/selectors/Tab/TabUI';
+import TabPannel from 'components/selectors/TabPannel/TabPannel';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -53,6 +55,9 @@ export const Toolbox = () => {
       className="toolbox transition w-12 h-full flex flex-col bg-white"
     >
       <div className="flex flex-1 flex-col items-center pt-3">
+        
+        
+        
         <div
           ref={(ref) =>
             create(
@@ -76,7 +81,6 @@ export const Toolbox = () => {
         </div>
 
 
-
         <div
           ref={(ref) =>
             create(
@@ -98,6 +102,42 @@ export const Toolbox = () => {
           </Tooltip>
         </div>
 
+        
+        <div
+          ref={(ref) =>
+            create(ref, <TabUI></TabUI>)
+          }
+        >
+          <Tooltip title="Tab Group" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+        </div>
+
+
+        <div
+          ref={(ref) =>
+            create(
+              ref,
+              <Element
+                canvas
+                is={TabPannel}
+                background={{ r: 200, g: 230, b: 230, a: 1 }}
+                height="300px"
+                width="100%"
+              ></Element>
+            )
+          }
+        >
+          <Tooltip title="Tab Pannel" placement="right">
+            <Item className="m-2 pb-2 cursor-pointer block" move>
+              <SquareSvg />
+            </Item>
+          </Tooltip>
+        </div>
+
+
         <div
           ref={(ref) =>
             create(ref, <DataGridUI></DataGridUI>)
@@ -109,6 +149,8 @@ export const Toolbox = () => {
           </Tooltip>
         </div>
 
+
+
         <div
           ref={(ref) =>
             create(ref, <FormTextInput></FormTextInput>)
@@ -119,6 +161,8 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
+
+
         <div
           ref={(ref) =>
             create(ref, <FormRadioGroup></FormRadioGroup>)
@@ -129,6 +173,7 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
+
 
         <div
           ref={(ref) =>
@@ -141,6 +186,7 @@ export const Toolbox = () => {
           </Tooltip>
         </div>
 
+
         <div
           ref={(ref) =>
             create(ref, <FormCheckbox></FormCheckbox>)
@@ -151,6 +197,7 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
+
 
         <div
           ref={(ref) =>
@@ -163,6 +210,7 @@ export const Toolbox = () => {
           </Tooltip>
         </div>
 
+
         <div
           ref={(ref) =>
             create(ref, <FloatingActionButton></FloatingActionButton>)
@@ -173,6 +221,7 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
+
 
         <div
           ref={(ref) =>
@@ -192,6 +241,8 @@ export const Toolbox = () => {
             </Item>
           </Tooltip>
         </div>
+
+        
         <div ref={(ref) => create(ref, <Video />)}>
           <Tooltip title="Video" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>

@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { ContainerSettings } from './ContainerSettings';
+import { TabUISettings } from './TabUISettings';
+
+import Tab from '@material-ui/core/Tab';
 
 import { Resizer } from '../Resizer';
 
 
-export type ContainerProps = {
+export type TabUIProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
   color: Record<'r' | 'g' | 'b' | 'a', number>;
   flexDirection: string;
@@ -39,10 +41,9 @@ const defaultProps = {
   radius: 0,
   width: 'auto',
   height: 'auto',
-  isResponsive: "false"
 };
 
-export const Container = (props: Partial<ContainerProps>) => {
+export const TabUI = (props: Partial<TabUIProps>) => {
   props = {
     ...defaultProps,
     ...props,
@@ -59,39 +60,19 @@ export const Container = (props: Partial<ContainerProps>) => {
     shadow,
     radius,
     children,
-    isResponsive
   } = props;
   return (
-    <Resizer
-      propKey={{ width: 'width', height: 'height', isResponsive: 'isResponsive'}}
-      style={{
-        justifyContent,
-        alignItems,
-        flexDirection,
-        background: `rgba(${Object.values(background)})`,
-        color: `rgba(${Object.values(color)})`,
-        padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
-        margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
-        boxShadow:
-          shadow === 0
-            ? 'none'
-            : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
-        borderRadius: `${radius}px`,
-        flex: fillSpace === 'yes' ? 1 : 'unset',
-      }}
-    >
-        {children}  
-    </Resizer>
+    <Tab label="Item Two"/>
   );
 };
 
-Container.craft = {
-  displayName: 'Container',
+TabUI.craft = {
+  displayName: 'TabGroup',
   props: defaultProps,
   rules: {
     canDrag: () => true,
   },
   related: {
-    toolbar: ContainerSettings,
+    toolbar: TabUISettings,
   },
 };

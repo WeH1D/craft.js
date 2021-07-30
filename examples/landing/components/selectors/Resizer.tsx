@@ -92,12 +92,14 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
     parent,
     active,
     inNodeContext,
+    isResponsive,
   } = useNode((node) => ({
     parent: node.data.parent,
     active: node.events.selected,
     nodeWidth: node.data.props[propKey.width],
     nodeHeight: node.data.props[propKey.height],
     fillSpace: node.data.props.fillSpace,
+    isResponsive: node.data.props[propKey.isResponsive]
   }));
 
   const { isRootNode, parentDirection } = useEditor((state, query) => {
@@ -195,7 +197,7 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
         return acc;
       }, {})}
       className={
-        "responsive " + 
+        (isResponsive == "true" ? "responsive " : "") +  
         cx([
         {
           'm-auto': isRootNode,

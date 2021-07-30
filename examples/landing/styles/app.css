@@ -27,9 +27,8 @@ body {
     transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 700px) {
     .responsive {
-        flex-direction: 'column' !important;
-        background: blueviolet !important;
+        flex-direction: column !important;
     }
 }

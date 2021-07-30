@@ -1,8 +1,9 @@
 import { useNode, useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import { globalContext } from 'utils/Context/context'
 
 import ArrowUp from '../../public/icons/arrow-up.svg';
 import Delete from '../../public/icons/delete.svg';
@@ -47,6 +48,7 @@ export const RenderNode = ({ render }) => {
     deletable,
     connectors: { drag },
     parent,
+    props
   } = useNode((node) => ({
     isHover: node.events.hovered,
     dom: node.dom,
@@ -97,6 +99,8 @@ export const RenderNode = ({ render }) => {
     };
   }, [scroll]);
 
+  const Gcontext = useContext(globalContext)
+
   return (
     <>
       {isHover || isActive
@@ -132,6 +136,9 @@ export const RenderNode = ({ render }) => {
                   onMouseDown={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     actions.delete(id);
+                    
+                    var temp =  Gcontext[props.contextName].values;
+                    delete temp[props.fieldName];
                   }}
                 >
                   <Delete />

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useNode } from '@craftjs/core'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { formContext } from '../Form/Form'
 import { FormTextInputSettings } from './FormTextInputSettings'
 import { TextField } from '@material-ui/core'
-import {globalContext} from 'utils/Context/context'
+import { globalContext } from 'utils/Context/context'
 
 export type FormTextInputProps = {
   fieldName: string;
@@ -27,6 +27,7 @@ export type FormTextInputProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
+  contextName: string;
 };
 
 const defaultProps = {
@@ -45,6 +46,7 @@ const defaultProps = {
   radius: 0,
   width: '100',
   height: 'auto',
+  contextName: 'abc'
 };
 
 export const FormTextInput = (props: Partial<FormTextInputProps>) => {
@@ -53,7 +55,7 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
     ...defaultProps,
     ...props,
   };
-  const {
+  var {
     fieldName,
     fieldType,
     fieldLabel,
@@ -67,16 +69,22 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
     shadow,
     radius,
     width,
-    height
+    height,
+    contextName
   } = props;
 
-  const { connectors: { connect, drag } } = useNode();
+  const { connectors: { connect, drag }, actions: { setProp } } = useNode();
   var context = useContext(formContext)
   const Gcontext = useContext(globalContext)
+
+  setProp(props => {
+    props.contextName = context["contextName"];
+  })
+
   return (
     <TextField
       ref={ref => connect(drag(ref))}
-       style={{
+      style={{
         justifyContent,
         alignItems,
         background: `rgba(${Object.values(background)})`,
@@ -94,18 +102,15 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
       }}
       fullWidth
       variant="outlined"
-      label= {fieldLabel}
+      label={fieldLabel}
       type={fieldType}
       onChange={a => {
-        if(Gcontext[context["contextName"]] != null){
-        Gcontext[context["contextName"]].values = {
-          ...Gcontext[context["contextName"]].values,
-          [fieldName]: a.target.value
+        if (Gcontext[context["contextName"]] != null) {
+          Gcontext[context["contextName"]].values = {
+            ...Gcontext[context["contextName"]].values,
+            [fieldName]: a.target.value
+          }
         }
-        console.log("Kontekst: " + context["contextName"])
-        console.log(Gcontext[context["contextName"]].values)
-        Gcontext[context["contextName"]].func()
-      }
       }}
     />
   )

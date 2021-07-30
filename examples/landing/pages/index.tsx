@@ -35,12 +35,13 @@ function App() {
 
     context["registration"] = {
     values: {},
-    func: (a) => {register(a)},
+    submit: (a) => {submit(a)},
+    register: (a) => {register(a)},
     }
 
   context["login"] = {
     values: {},
-    func: (a) => {login(a)},
+    login: (a) => {login(a)},
   }
 
   return (
@@ -91,14 +92,19 @@ function App() {
       </div>
     </ThemeProvider>
   );
-}
 
-function register(a){
-  console.log("registrovano!! --- " + a)
-}
-
-function login(a){
-  console.log("logovano!! --- " + a)
+  function register(a){
+    alert("registrovano!!" + JSON.stringify(context["registration"].values))
+  }
+  
+  function submit(a){
+    alert("submitano!!" + JSON.stringify(context["registration"].values))
+  }
+  
+  
+  function login(a){
+    alert("logovano!!" + JSON.stringify(context["login"].values))
+  }
 }
 
 export default App;

@@ -2,9 +2,9 @@ import React from 'react'
 import { useNode } from '@craftjs/core'
 import { useContext } from 'react'
 import { formContext } from '../Form/Form'
-import { TextField } from '@material-ui/core'
+import { InputBase, TextField } from '@material-ui/core'
 import {globalContext} from 'utils/Context/context'
-import { DataGrid, GridColDef, GridValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, GridColDef, GridColumnHeaderParams, GridValueGetterParams } from '@material-ui/data-grid';
 import { DataGridUISettings } from './DataGridUISettings'
 
 export type DataGridUIProps = {
@@ -75,33 +75,49 @@ export const DataGridUI = (props: Partial<DataGridUIProps>) => {
   var context = useContext(formContext)
   const Gcontext = useContext(globalContext)
 
+  function changeHeaderName (params: GridColumnHeaderParams){
+    return <InputBase
+      defaultValue={params.colDef.headerName}
+      inputProps={{ 'aria-label': 'naked' }}
+      onChange = {
+        (a) => {
+          params.colDef.headerName = a.target.value;
+        }
+      }
+  />
+  }
+
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 120 },
     {
       field: 'firstName',
       headerName: 'First name',
-      width: 150,
+      flex: 1,
       editable: true,
+      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
     },
     {
       field: 'lastName',
       headerName: 'Last name',
-      width: 150,
+      flex: 1,
       editable: true,
+      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
     },
     {
       field: 'age',
       headerName: 'Age',
       type: 'number',
-      width: 110,
+      flex: 1,
       editable: true,
+      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
     },
     {
       field: 'fullName',
       headerName: 'Full name',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
-      width: 160,
+      flex: 1,
+      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
       valueGetter: (params: GridValueGetterParams) =>
         `${params.getValue(params.id, 'firstName') || ''} ${
           params.getValue(params.id, 'lastName') || ''
@@ -138,6 +154,7 @@ export const DataGridUI = (props: Partial<DataGridUIProps>) => {
         borderRadius: `${radius}px`,
         flex: fillSpace === 'yes' ? 1 : 'unset', }}>
       <DataGrid
+
         rows={rows}
         columns={columns}
         pageSize={5}

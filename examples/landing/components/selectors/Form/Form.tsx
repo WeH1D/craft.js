@@ -39,7 +39,7 @@ const defaultProps = {
   color: { r: 0, g: 0, b: 0, a: 1 },
   shadow: 0,
   radius: 0,
-  width: '100%',
+  width: 'auto',
   height: 'auto',
   contextName: ""
 };
@@ -66,19 +66,23 @@ export const Form = (props: Partial<ContainerProps>) => {
     contextName
   } = props;
   const { connectors: { connect, drag } } = useNode();
-  const context = useContext(globalContext)
-  const formik = useFormik({
-    initialValues: context[contextName] == null ? null : context[contextName].values,
-    onSubmit: values => {
-      context[contextName].register;
-    },
-  });
+  const Gcontext = useContext(globalContext)
+  // const formik = useFormik({
+  //   initialValues: Gcontext[contextName] == null ? null : Gcontext[contextName].values,
+  //   onSubmit: values => {
+  //     if (Gcontext[context["contextName"]] != null) {
+  //       Gcontext[context["contextName"]].values = {
+  //         ...Gcontext[context["contextName"]].values,
+  //         [fieldName]: a.target.value
+  //       }
+  //     }
+  //   },
+  // });
 
   var formValues = {
     contextName: contextName
   }
-
-  console.log("globalni iz forme " + JSON.stringify(context))
+  
   return (
     <Resizer
       propKey={{ width: 'width', height: 'height' }}
@@ -98,7 +102,7 @@ export const Form = (props: Partial<ContainerProps>) => {
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}>
        <formContext.Provider value={formValues}>
-          <form id="forma" onSubmit={formik.handleSubmit}
+          <form id="forma" 
           style={{
             width:"100%"
           }}>
