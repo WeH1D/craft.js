@@ -26,6 +26,7 @@ export type TabUIProps = {
   children: React.ReactNode;
   radius: number;
   isResponsive: string;
+  label: string;
 };
 
 const defaultProps = {
@@ -41,6 +42,7 @@ const defaultProps = {
   radius: 0,
   width: 'auto',
   height: 'auto',
+  label: "default"
 };
 
 export const TabUI = (props: Partial<TabUIProps>) => {
@@ -60,14 +62,15 @@ export const TabUI = (props: Partial<TabUIProps>) => {
     shadow,
     radius,
     children,
+    label
   } = props;
   return (
-    <Tab label="Item Two"/>
+    <Tab label={label}/>
   );
 };
 
 TabUI.craft = {
-  displayName: 'TabGroup',
+  displayName: 'Tab',
   props: defaultProps,
   rules: {
     canDrag: () => true,

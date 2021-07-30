@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ContainerSettings } from './ContainerSettings';
 
@@ -23,7 +23,6 @@ export type ContainerProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
-  isResponsive: string;
 };
 
 const defaultProps = {
@@ -37,9 +36,8 @@ const defaultProps = {
   color: { r: 0, g: 0, b: 0, a: 1 },
   shadow: 0,
   radius: 0,
-  width: 'auto',
+  width: '100%',
   height: 'auto',
-  isResponsive: "false"
 };
 
 export const Container = (props: Partial<ContainerProps>) => {
@@ -59,15 +57,15 @@ export const Container = (props: Partial<ContainerProps>) => {
     shadow,
     radius,
     children,
-    isResponsive
   } = props;
   return (
     <Resizer
-      propKey={{ width: 'width', height: 'height', isResponsive: 'isResponsive'}}
+      propKey={{ width: 'width', height: 'height' }}
+      //className = "responsive"
       style={{
         justifyContent,
         alignItems,
-        flexDirection,
+        flexDirection : flexDirection,
         background: `rgba(${Object.values(background)})`,
         color: `rgba(${Object.values(color)})`,
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,

@@ -7,23 +7,6 @@ export const TabUISettings = () => {
   return (
     <React.Fragment>
 
-       <ToolbarSection
-        title="Settings"
-        props={['isResponsive']}
-      >
-         <ToolbarItem propKey="isResponsive" type="radio" label="Responsivness">
-          <ToolbarRadio value="false" label="Not Responsive" />
-          <ToolbarRadio value="true" label="Responsive" />
-        </ToolbarItem>
-        <ToolbarSection
-        title="Responsive width"
-        props={['width']}
-        >
-          <ToolbarItem propKey="width" type="text" label="800px screen"/>
-          <ToolbarItem propKey="width" type="text" label="500px screen"/>
-          <ToolbarItem propKey="width" type="text" label="300px screen"/>
-        </ToolbarSection>
-      </ToolbarSection>
 
       <ToolbarSection
         title="Dimensions"
@@ -138,6 +121,13 @@ export const TabUISettings = () => {
           <ToolbarRadio value="center" label="Center" />
           <ToolbarRadio value="flex-end" label="Flex end" />
         </ToolbarItem>
+      </ToolbarSection>
+
+      <ToolbarSection
+        title="Settings"
+        props={['label', ]}
+      >
+        <ToolbarItem propKey="label" type="text" label="Label" />
       </ToolbarSection>
     </React.Fragment>
   );
