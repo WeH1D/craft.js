@@ -14,9 +14,7 @@ import { green, lightBlue, yellow } from '@material-ui/core/colors';
 import { colors } from '@material-ui/core';
 
 
-function TabPanel2({ value, index, children }) {
-  console.log("Value : " + value + " index: " + index)
-  console.log("jesu li jednaki: ", value === index)
+function TabPanel2({ value, index, type = "tab", children }) {
   return (
     <div
       role="tabpanel"
@@ -53,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+var numOfChildrens = 0
+var tabs = [];
 
 export type TabPannelProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -72,7 +72,6 @@ export type TabPannelProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
-  tabs: Array<JSX.Element>;
 };
 
 const defaultProps = {
@@ -88,10 +87,10 @@ const defaultProps = {
   radius: 0,
   width: '100%',
   height: '300px',
-  tabs: []
 };
 
-//var tabs = [];
+
+export const tabPannelContext = React.createContext({})
 export default function TabPannel(props: Partial<TabPannelProps>) {
 
   props = {
@@ -110,34 +109,28 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
     shadow,
     radius,
     children,
-    tabs
   } = props;
 
 
   function createTabs() {
     //var tabs = [];
 
-    console.log("usao u f-ju create tabs, br panela u listi: ", tabs.length)
-
-    var numOfChildrens = 0
+    var tempNumOfChildrens = 0;
     if (props != null) {
-      console.log(props.children)
       var obj = props.children
-      console.log("OBj ", obj)
       if (obj != null) {
         var pr = obj["props"]
         var ch = pr["children"]
         numOfChildrens = ch.length
+        tempNumOfChildrens = numOfChildrens;
       }
     }
 
 
     //for(var i = 0; i< numOfChildrens; i ++ ){
-    if (numOfChildrens > 0) {
-      console.log("jesu li jednaki: ", value === numOfChildrens - 1)
-
-      props.tabs = [...props.tabs,
-      <TabPanel2 value={value} index={numOfChildrens - 1} key={numOfChildrens.toString()}>
+    if (numOfChildrens > 0 && tempNumOfChildrens - tabs.length == 1) {
+      console.log("DODAO SAM TAB PANNEL: ", numOfChildrens-1)
+      tabs = [...tabs, <TabPanel2 value={value} index={numOfChildrens-1} key={numOfChildrens.toString()}>
         <Element
           id={"tab_pannel_" + { numOfChildrens }}
           canvas
@@ -151,11 +144,15 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
       </TabPanel2>]
 
 
+     
+      
+
     }
 
     //}
 
-    console.log("Broj tab panela: ", tabs.length)
+
+
     console.log(tabs)
     return tabs;
   }
@@ -164,10 +161,19 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
   const [value, setValue] = React.useState(0);
   const { connectors: { connect, drag }, actions: { setProp } } = useNode();
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    console.log("usao na promjenu, broj: ", newValue)
+  var context = {
+    handleChange: (a) => handleChange(a),
+    numOfChildrens: numOfChildrens
+  }
+
+
+  const handleChange = (newValue: number) => {
+    console.log("Usao sam za broj: ",newValue)
     setValue(newValue);
   };
+
+  context["handleChange"] = (a) => handleChange(a)
+  context["numOfChildrens"] = numOfChildrens
 
   return (
     <Resizer
@@ -191,14 +197,67 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
 
       <div style={{ height: "50px", width: "100%" }}>
         <AppBar position="static">
-          <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-            {/* <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} /> */}
-            {children}
+          <Tabs value={value} aria-label="simple tabs example">
+            <tabPannelContext.Provider value={context}>
+              {/* <Tab label="Item One" {...a11yProps(0)} value = {0} onClick={()=>handleChange(0)}/>
+            <Tab label="Item Two" {...a11yProps(1)} value = {1} onClick={()=>handleChange(1)}/>
+            <Tab label="Item Three" {...a11yProps(2)} value = {2} onClick={()=>handleChange(2)}/> */}
+              {children}
+            </tabPannelContext.Provider>
           </Tabs>
         </AppBar>
         {createTabs()}
+
+        {/* <TabPanel2 value={value} index={0}>
+        <Element
+          id="tab_pannel_1"
+          canvas
+          is={Container}
+          background={{ r: 50, g: 50, b: 50, a: 1 }}
+          color={{ r: 0, g: 0, b: 0, a: 1 }}
+          height="150px"
+          width="150px"
+        ></Element>
+
+      </TabPanel2>
+
+      <TabPanel2 value={value} index={1} >
+        <Element
+          id="tab_pannel_2"
+          canvas
+          is={Container}
+          background={{ r: 130, g: 70, b: 90, a: 1 }}
+          color={{ r: 0, g: 0, b: 0, a: 1 }}
+          height="150px"
+          width="150px"
+        ></Element>
+
+      </TabPanel2>
+      <TabPanel2 value={value} index={2} >
+        <Element
+          id="tab_pannel_3"
+          canvas
+          is={Container}
+          background={{ r: 79, g: 145, b: 23, a: 1 }}
+          color={{ r: 0, g: 0, b: 0, a: 1 }}
+          height="150px"
+          width="150px"
+        ></Element>
+
+      </TabPanel2>
+
+      <TabPanel2 value={value} index={3} >
+        <Element
+          id="tab_pannel_4"
+          canvas
+          is={Container}
+          background={{ r: 5, g: 200, b: 78, a: 1 }}
+          color={{ r: 0, g: 0, b: 0, a: 1 }}
+          height="150px"
+          width="150px"
+        ></Element>
+
+      </TabPanel2> */}
       </div>
 
 

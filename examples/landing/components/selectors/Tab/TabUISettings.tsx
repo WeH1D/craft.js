@@ -125,7 +125,7 @@ export const TabUISettings = () => {
 
       <ToolbarSection
         title="Settings"
-        props={['label', ]}
+        props={['label',]}
       >
         <ToolbarItem propKey="label" type="text" label="Label" />
       </ToolbarSection>

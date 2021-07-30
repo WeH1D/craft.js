@@ -5,6 +5,9 @@ import { TabUISettings } from './TabUISettings';
 import Tab from '@material-ui/core/Tab';
 
 import { Resizer } from '../Resizer';
+import { useContext } from 'react';
+
+import { tabPannelContext } from '../TabPannel/TabPannel';
 
 
 export type TabUIProps = {
@@ -42,7 +45,7 @@ const defaultProps = {
   radius: 0,
   width: 'auto',
   height: 'auto',
-  label: "default"
+  label: "default",
 };
 
 export const TabUI = (props: Partial<TabUIProps>) => {
@@ -62,10 +65,24 @@ export const TabUI = (props: Partial<TabUIProps>) => {
     shadow,
     radius,
     children,
-    label
+    label,
   } = props;
+
+  var context = useContext(tabPannelContext)
+
+  var func = context["handleChange"]
+  var index = context["numOfChildrens"]
+  console.log("PREVUKO TAB: ",index)
+
+
+  function assignProps(index: any) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
   return (
-    <Tab label={label}/>
+    <Tab label={label} {...assignProps(index)} value={index}  onClick = {() => func(index)}/>
   );
 };
 
