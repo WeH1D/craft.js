@@ -30,6 +30,7 @@ export type TabUIProps = {
   radius: number;
   isResponsive: string;
   label: string;
+  index: number;
 };
 
 const defaultProps = {
@@ -46,6 +47,7 @@ const defaultProps = {
   width: 'auto',
   height: 'auto',
   label: "default",
+  index: 1
 };
 
 export const TabUI = (props: Partial<TabUIProps>) => {
@@ -66,13 +68,14 @@ export const TabUI = (props: Partial<TabUIProps>) => {
     radius,
     children,
     label,
+    index,
   } = props;
 
   var context = useContext(tabPannelContext)
 
   var func = context["handleChange"]
-  var index = context["numOfChildrens"]
-  console.log("PREVUKO TAB: ",index)
+  // var index = context["numOfChildrens"]
+  // console.log("PREVUKO TAB: ",index)
 
 
   function assignProps(index: any) {

@@ -163,17 +163,31 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
 
   var context = {
     handleChange: (a) => handleChange(a),
-    numOfChildrens: numOfChildrens
   }
 
 
   const handleChange = (newValue: number) => {
     console.log("Usao sam za broj: ",newValue)
+    // potrebno je svakom TabPanel2 u array-u "tabs" azurirati value 
+    // ovako kako je sada, f-ja createTabs dodaje samo panele u array i dodijeli im pocetnu vrijednost za value
+    // medjutim, nakon klikova na Tab-ove, ova f-ja setuje vrijednost za value, ali se ne azuriraju
+    // vrijednosti value-a za svaki TabPanel2 i onda ne radi otkrivanje sakrivanje panela zbog provjere value===index u TabPanel2
+    // kada pogledas hard codirane panele od linije 225 pa nadalje, vidjet ces da svaki ima value = {value} i posto ova f-ja 
+    // setuje value, svima se promjeni vrijednost i dobro radi provjera value === index
+    // medjutim, kada njih zakomentarisemo i stavimo createTabs, ona samo dodaje TabPanele u array al im nikad vise ne azurira value
+    // ova sintaksa dole tabs[i].props.value = newValue ne radi za nasu verziju typescripta, 
+    // javlja error da je svaki props od TabPanel2 samo readonly i ne moze se azurirati
+    // ima dosta rjesenja na stackoverflow-u za azuriranje verzije typescripta i sta jos treba
+    // samo provjeri nakon dizanja typescripta jel javlja negdje sintaksne errore i ako ih ima malo prepravi
+    // valjda ne bi trebalo biti puno sintaksnih errora nakon dizanja typescripta,
+    for(var i = 0; i < tabs.length; i++){
+      console.log(tabs[i].props)
+      tabs[i].props.value = newValue
+    }
     setValue(newValue);
   };
 
   context["handleChange"] = (a) => handleChange(a)
-  context["numOfChildrens"] = numOfChildrens
 
   return (
     <Resizer

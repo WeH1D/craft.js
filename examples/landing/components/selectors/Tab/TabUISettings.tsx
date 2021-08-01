@@ -125,9 +125,10 @@ export const TabUISettings = () => {
 
       <ToolbarSection
         title="Settings"
-        props={['label',]}
+        props={['label','index']}
       >
         <ToolbarItem propKey="label" type="text" label="Label" />
+        <ToolbarItem propKey="index" type="text" label="Index" />
       </ToolbarSection>
     </React.Fragment>
   );
