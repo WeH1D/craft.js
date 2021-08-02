@@ -9,30 +9,40 @@ import { Element, useNode } from '@craftjs/core';
 import { Container } from '../Container';
 import { Resizer } from '../Resizer';
 
-import { TabPannelSettings } from './TabPannelSettings';
+import { TabGroupSettings } from './TabGroupSettings';
 import { green, lightBlue, yellow } from '@material-ui/core/colors';
 import { colors } from '@material-ui/core';
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: any;
+  value: any;
+}
 
-function TabPanel2({ value, index, type = "tab", children }) {
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      hidden={value != index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-    // {...other}
+      {...other}
     >
-      {value === index && (
-        // <Box p={3}>
-        //   <Typography>{children}</Typography>
-        // </Box>
-        <div>
-          {children}
-        </div>
-
+      {value == index && (
+         <Element
+         id={"tab_pannel_" +  index }
+         canvas
+         is={Container}
+         background={{ r: Math.floor(Math.random() * 150) + 1, g: Math.floor(Math.random() * 150) + 1, b: Math.floor(Math.random() * 150) + 1, a: 1 }}
+         color={{ r: 0, g: 0, b: 0, a: 1 }}
+         height="100px"
+         width="100%"
+       >
+        {children}
+      </Element>
       )}
-
     </div>
   );
 }
@@ -50,9 +60,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
 }));
-
-var numOfChildrens = 0
-var tabs = [];
 
 export type TabPannelProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -89,9 +96,12 @@ const defaultProps = {
   height: '300px',
 };
 
+var numOfChildrens = 0
+var tabs = [];
 
 export const tabPannelContext = React.createContext({})
-export default function TabPannel(props: Partial<TabPannelProps>) {
+
+export default function TabGroup(props: Partial<TabPannelProps>) {
 
   props = {
     ...defaultProps,
@@ -113,7 +123,6 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
 
 
   function createTabs() {
-    //var tabs = [];
 
     var tempNumOfChildrens = 0;
     if (props != null) {
@@ -126,34 +135,12 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
       }
     }
 
-
-    //for(var i = 0; i< numOfChildrens; i ++ ){
     if (numOfChildrens > 0 && tempNumOfChildrens - tabs.length == 1) {
-      console.log("DODAO SAM TAB PANNEL: ", numOfChildrens-1)
-      tabs = [...tabs, <TabPanel2 value={value} index={numOfChildrens-1} key={numOfChildrens.toString()}>
-        <Element
-          id={"tab_pannel_" + { numOfChildrens }}
-          canvas
-          is={Container}
-          background={{ r: 50, g: 50, b: 50, a: 1 }}
-          color={{ r: 0, g: 0, b: 0, a: 1 }}
-          height="150px"
-          width="150px"
-        ></Element>
-
-      </TabPanel2>]
-
-
-     
-      
-
+      tabs = [...tabs, 
+        <TabPanel value={value} index={numOfChildrens-1} key={numOfChildrens.toString()}></TabPanel>
+      ]
     }
-
-    //}
-
-
-
-    console.log(tabs)
+    console.log("created tabs",tabs)
     return tabs;
   }
 
@@ -163,28 +150,18 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
 
   var context = {
     handleChange: (a) => handleChange(a),
+    tabs: {}
   }
-
 
   const handleChange = (newValue: number) => {
     console.log("Usao sam za broj: ",newValue)
-    // potrebno je svakom TabPanel2 u array-u "tabs" azurirati value 
-    // ovako kako je sada, f-ja createTabs dodaje samo panele u array i dodijeli im pocetnu vrijednost za value
-    // medjutim, nakon klikova na Tab-ove, ova f-ja setuje vrijednost za value, ali se ne azuriraju
-    // vrijednosti value-a za svaki TabPanel2 i onda ne radi otkrivanje sakrivanje panela zbog provjere value===index u TabPanel2
-    // kada pogledas hard codirane panele od linije 225 pa nadalje, vidjet ces da svaki ima value = {value} i posto ova f-ja 
-    // setuje value, svima se promjeni vrijednost i dobro radi provjera value === index
-    // medjutim, kada njih zakomentarisemo i stavimo createTabs, ona samo dodaje TabPanele u array al im nikad vise ne azurira value
-    // ova sintaksa dole tabs[i].props.value = newValue ne radi za nasu verziju typescripta, 
-    // javlja error da je svaki props od TabPanel2 samo readonly i ne moze se azurirati
-    // ima dosta rjesenja na stackoverflow-u za azuriranje verzije typescripta i sta jos treba
-    // samo provjeri nakon dizanja typescripta jel javlja negdje sintaksne errore i ako ih ima malo prepravi
-    // valjda ne bi trebalo biti puno sintaksnih errora nakon dizanja typescripta,
-    for(var i = 0; i < tabs.length; i++){
-      console.log(tabs[i].props)
-      tabs[i].props.value = newValue
-    }
     setValue(newValue);
+    var updatedTabs = []
+    for(var i = 0; i < tabs.length; i++){
+      updatedTabs[i] = <TabPanel value={newValue} index={tabs[i].props.index} key={tabs[i].key}>{tabs[i].children}</TabPanel>
+    }
+    tabs = []
+    tabs = updatedTabs
   };
 
   context["handleChange"] = (a) => handleChange(a)
@@ -208,87 +185,28 @@ export default function TabPannel(props: Partial<TabPannelProps>) {
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}
     >
-
       <div style={{ height: "50px", width: "100%" }}>
         <AppBar position="static">
           <Tabs value={value} aria-label="simple tabs example">
             <tabPannelContext.Provider value={context}>
-              {/* <Tab label="Item One" {...a11yProps(0)} value = {0} onClick={()=>handleChange(0)}/>
-            <Tab label="Item Two" {...a11yProps(1)} value = {1} onClick={()=>handleChange(1)}/>
-            <Tab label="Item Three" {...a11yProps(2)} value = {2} onClick={()=>handleChange(2)}/> */}
               {children}
             </tabPannelContext.Provider>
           </Tabs>
         </AppBar>
-        {createTabs()}
-
-        {/* <TabPanel2 value={value} index={0}>
-        <Element
-          id="tab_pannel_1"
-          canvas
-          is={Container}
-          background={{ r: 50, g: 50, b: 50, a: 1 }}
-          color={{ r: 0, g: 0, b: 0, a: 1 }}
-          height="150px"
-          width="150px"
-        ></Element>
-
-      </TabPanel2>
-
-      <TabPanel2 value={value} index={1} >
-        <Element
-          id="tab_pannel_2"
-          canvas
-          is={Container}
-          background={{ r: 130, g: 70, b: 90, a: 1 }}
-          color={{ r: 0, g: 0, b: 0, a: 1 }}
-          height="150px"
-          width="150px"
-        ></Element>
-
-      </TabPanel2>
-      <TabPanel2 value={value} index={2} >
-        <Element
-          id="tab_pannel_3"
-          canvas
-          is={Container}
-          background={{ r: 79, g: 145, b: 23, a: 1 }}
-          color={{ r: 0, g: 0, b: 0, a: 1 }}
-          height="150px"
-          width="150px"
-        ></Element>
-
-      </TabPanel2>
-
-      <TabPanel2 value={value} index={3} >
-        <Element
-          id="tab_pannel_4"
-          canvas
-          is={Container}
-          background={{ r: 5, g: 200, b: 78, a: 1 }}
-          color={{ r: 0, g: 0, b: 0, a: 1 }}
-          height="150px"
-          width="150px"
-        ></Element>
-
-      </TabPanel2> */}
+          {createTabs()}
       </div>
-
-
-
-
     </Resizer>
 
   );
 }
 
-TabPannel.craft = {
+TabGroup.craft = {
   displayName: 'Tab Pannel',
   props: defaultProps,
   rules: {
     canDrag: () => true,
   },
   related: {
-    toolbar: TabPannelSettings,
+    toolbar: TabGroupSettings,
   },
 };

@@ -7,7 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import { Resizer } from '../Resizer';
 import { useContext } from 'react';
 
-import { tabPannelContext } from '../TabPannel/TabPannel';
+import { tabPannelContext } from '../TabPannel/TabGroup';
+import { createContext } from 'react';
 
 
 export type TabUIProps = {
@@ -47,7 +48,7 @@ const defaultProps = {
   width: 'auto',
   height: 'auto',
   label: "default",
-  index: 1
+  index: 0
 };
 
 export const TabUI = (props: Partial<TabUIProps>) => {
@@ -85,7 +86,7 @@ export const TabUI = (props: Partial<TabUIProps>) => {
     };
   }
   return (
-    <Tab label={label} {...assignProps(index)} value={index}  onClick = {() => func(index)}/>
+    <Tab label={label} {...assignProps(index)}  onClick = {() => func(index)}/>
   );
 };
 

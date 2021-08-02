@@ -20,7 +20,7 @@ import { FormSlider } from 'components/selectors/FormSlider/FormSlider';
 import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 import { DataGridUI } from 'components/selectors/DataGrid/DataGridUI';
 import { TabUI } from 'components/selectors/Tab/TabUI';
-import TabPannel from 'components/selectors/TabPannel/TabPannel';
+import TabGroup from 'components/selectors/TabPannel/TabGroup';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -108,7 +108,7 @@ export const Toolbox = () => {
             create(ref, <TabUI></TabUI>)
           }
         >
-          <Tooltip title="Tab Group" placement="right">
+          <Tooltip title="Tab" placement="right">
             <Item className="m-2 pb-2 cursor-pointer block" move>
               <SquareSvg />
             </Item>
@@ -122,7 +122,7 @@ export const Toolbox = () => {
               ref,
               <Element
                 canvas
-                is={TabPannel}
+                is={TabGroup}
                 background={{ r: 200, g: 230, b: 230, a: 1 }}
                 height="300px"
                 width="100%"
