@@ -31,7 +31,7 @@ export type FormTextInputProps = {
 };
 
 const defaultProps = {
-  fieldName: 'default',
+  fieldName: '',
   fieldType: 'text',
   fieldLabel: '',
   flexDirection: 'column',
@@ -81,9 +81,17 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
     props.contextName = context["contextName"];
   })
 
+  function getDefaultValue(){
+    if (Gcontext[context["contextName"]] != null) {
+      var map = Gcontext[context["contextName"]].value
+      return map["fieldName"]
+    }
+  }
+
   return (
     <TextField
       ref={ref => connect(drag(ref))}
+      defaultValue = {getDefaultValue()}
       style={{
         justifyContent,
         alignItems,

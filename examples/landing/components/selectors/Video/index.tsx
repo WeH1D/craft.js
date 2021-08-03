@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { VideoSettings } from './VideoSettings';
 
 const YoutubeDiv = styled.div<any>`
-  width: 100%;
-  height: 100%;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   > div {
     height: 100%;
   }
@@ -18,7 +18,30 @@ const YoutubeDiv = styled.div<any>`
   }
 `;
 
-export const Video = (props: any) => {
+export type VideoProps = {
+  width: string;
+  height: string;
+  videoId : string;
+};
+
+const defaultProps = {
+  width : "400",
+  height :"400",
+  videoId: "IwzUs1IMdyQ"
+};
+
+
+export const Video = (props: Partial<VideoProps>) => {
+  props = {
+    ...defaultProps,
+    ...props,
+};
+const {
+    width,
+    height,
+    videoId
+} = props;
+
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
@@ -28,10 +51,8 @@ export const Video = (props: any) => {
     selected: node.events.selected,
   }));
 
-  const { videoId } = props;
-
   return (
-    <YoutubeDiv ref={connect} enabled={enabled}>
+    <YoutubeDiv ref={connect} enabled={enabled} width={width} height={height}>
       <YouTube
         videoId={videoId}
         opts={{

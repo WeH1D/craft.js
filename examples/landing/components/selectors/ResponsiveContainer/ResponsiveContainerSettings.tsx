@@ -3,9 +3,40 @@ import React from 'react';
 import { ToolbarSection, ToolbarItem } from '../../editor';
 import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 
-export const ContainerSettings = () => {
+export const ResponsiveContainerSettings = () => {
   return (
     <React.Fragment>
+
+      <ToolbarSection
+        title="Responsiveness"
+        props={['xs', 'sm', 'md', 'lg', 'xl', "rowOrCol"]}
+      >
+       {/* <ToolbarItem
+          propKey="rowOrCol"
+          type="radio"
+          label="Row/Column"
+        >
+          <ToolbarRadio value="row" label="Row" />
+          <ToolbarRadio value="col" label="Column" />
+        </ToolbarItem> */}
+         {/* 
+         Extra small screen / phone
+          xs: <576px
+        Small screen / phone
+          sm: ≥576px
+        Medium screen / tablet
+          md: ≥768px
+        Large screen / desktop
+          lg: ≥992px
+        Extra large screen / wide desktop
+          xl: ≥1200px
+           */}
+          <ToolbarItem propKey="xs" type="number" label="xs or default"/>
+          <ToolbarItem propKey="sm" type="number" label="sm"/>
+          <ToolbarItem propKey="md" type="number" label="md"/>
+          <ToolbarItem propKey="lg" type="number" label="lg"/>
+          <ToolbarItem propKey="xl" type="number" label="xl"/>
+      </ToolbarSection>
 
       <ToolbarSection
         title="Dimensions"

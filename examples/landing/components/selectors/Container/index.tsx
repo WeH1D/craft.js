@@ -23,7 +23,6 @@ export type ContainerProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
-  isResponsive: string;
 };
 
 const defaultProps = {
@@ -39,7 +38,6 @@ const defaultProps = {
   radius: 0,
   width: 'auto',
   height: 'auto',
-  isResponsive: "false"
 };
 
 export const Container = (props: Partial<ContainerProps>) => {
@@ -59,11 +57,12 @@ export const Container = (props: Partial<ContainerProps>) => {
     shadow,
     radius,
     children,
-    isResponsive
   } = props;
+
   return (
     <Resizer
-      propKey={{ width: 'width', height: 'height', isResponsive: 'isResponsive'}}
+    className = "row"
+      propKey={{ width: 'width', height: 'height'}}
       style={{
         justifyContent,
         alignItems,

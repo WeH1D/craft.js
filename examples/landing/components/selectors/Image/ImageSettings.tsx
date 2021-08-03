@@ -3,19 +3,32 @@ import React from 'react';
 import { ToolbarSection, ToolbarItem } from '../../editor';
 import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 
-export const ContainerSettings = () => {
+export const ImageSettings = () => {
   return (
     <React.Fragment>
-
+         <ToolbarSection
+        title="Link"
+        props={['link']}
+      >
+        <ToolbarItem propKey="link" type="text" label="Image link" />
+      </ToolbarSection>
       <ToolbarSection
         title="Dimensions"
-        props={['width', 'height']}
+        props={['width', 'height', 'objectFit']}
         summary={({ width, height }: any) => {
           return `${width || 0} x ${height || 0}`;
         }}
       >
         <ToolbarItem propKey="width" type="text" label="Width" />
         <ToolbarItem propKey="height" type="text" label="Height" />
+
+        <ToolbarItem propKey="objectFit" type="radio" label="Image fit">
+          <ToolbarRadio value="fill" label="fill" />
+          <ToolbarRadio value="cover" label="cover" />
+          <ToolbarRadio value="contain" label="contain" />
+          <ToolbarRadio value="scale-down" label="cale-down" />
+          <ToolbarRadio value="none" label="none" />
+        </ToolbarItem>
       </ToolbarSection>
       <ToolbarSection
         title="Colors"

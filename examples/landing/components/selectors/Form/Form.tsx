@@ -6,6 +6,7 @@ import { FormSettings } from './FormSettings';
 import { Save } from '@material-ui/icons';
 import { Resizer } from '../Resizer';
 import {globalContext} from 'utils/Context/context'
+import { FormTextInput } from '../FormTextInput/FormTextInput';
 
 export type ContainerProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -117,6 +118,7 @@ Form.craft = {
   displayName: 'Form',
   rules: {
     canDrag: () => true,
+    canMoveIn: (incomingNode) => incomingNode.data.type == FormTextInput
   },
   props: defaultProps,
   related: {
