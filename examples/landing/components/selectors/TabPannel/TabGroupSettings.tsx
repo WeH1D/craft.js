@@ -3,10 +3,27 @@ import React from 'react';
 import { ToolbarSection, ToolbarItem } from '../../editor';
 import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 
-export const TabUISettings = () => {
+export const TabGroupSettings = () => {
   return (
     <React.Fragment>
 
+       <ToolbarSection
+        title="Settings"
+        props={['isResponsive']}
+      >
+         <ToolbarItem propKey="isResponsive" type="radio" label="Responsivness">
+          <ToolbarRadio value="false" label="Not Responsive" />
+          <ToolbarRadio value="true" label="Responsive" />
+        </ToolbarItem>
+        <ToolbarSection
+        title="Responsive width"
+        props={['width']}
+        >
+          <ToolbarItem propKey="width" type="text" label="800px screen"/>
+          <ToolbarItem propKey="width" type="text" label="500px screen"/>
+          <ToolbarItem propKey="width" type="text" label="300px screen"/>
+        </ToolbarSection>
+      </ToolbarSection>
 
       <ToolbarSection
         title="Dimensions"
@@ -121,14 +138,6 @@ export const TabUISettings = () => {
           <ToolbarRadio value="center" label="Center" />
           <ToolbarRadio value="flex-end" label="Flex end" />
         </ToolbarItem>
-      </ToolbarSection>
-
-      <ToolbarSection
-        title="Settings"
-        props={['label','index']}
-      >
-        <ToolbarItem propKey="label" type="text" label="Label" />
-        <ToolbarItem propKey="index" type="text" label="Index" />
       </ToolbarSection>
     </React.Fragment>
   );
