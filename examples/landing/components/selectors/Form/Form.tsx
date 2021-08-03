@@ -7,6 +7,7 @@ import { Save } from '@material-ui/icons';
 import { Resizer } from '../Resizer';
 import {globalContext} from 'utils/Context/context'
 import { FormTextInput } from '../FormTextInput/FormTextInput';
+import { FloatingActionButton } from '../FloatingActionButton/FloatingActionButton';
 
 export type ContainerProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -118,7 +119,8 @@ Form.craft = {
   displayName: 'Form',
   rules: {
     canDrag: () => true,
-    canMoveIn: (incomingNode) => incomingNode.data.type == FormTextInput
+    canMoveIn: (incomingNode) => incomingNode.data.type == FormTextInput || incomingNode.data.type == FloatingActionButton
+
   },
   props: defaultProps,
   related: {

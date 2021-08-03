@@ -83,8 +83,17 @@ export const FormTextInput = (props: Partial<FormTextInputProps>) => {
 
   function getDefaultValue(){
     if (Gcontext[context["contextName"]] != null) {
-      var map = Gcontext[context["contextName"]].value
-      return map["fieldName"]
+      var map = Gcontext[context["contextName"]].values
+      console.log("map", map)
+      if(map != null){
+      console.log("fieldName", fieldName)
+      if (fieldName in map){
+      console.log("map[fieldName]", map[fieldName])
+        return map[fieldName]
+      }
+      else
+        return ""
+      }
     }
   }
 
