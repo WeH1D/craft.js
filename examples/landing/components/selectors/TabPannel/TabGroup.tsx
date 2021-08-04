@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, useContext } from 'react';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -12,6 +12,7 @@ import { Resizer } from '../Resizer';
 import { TabGroupSettings } from './TabGroupSettings';
 import { green, lightBlue, yellow } from '@material-ui/core/colors';
 import { colors } from '@material-ui/core';
+import { globalContext } from 'utils/Context/context'
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -47,12 +48,8 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: any) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
+
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -97,7 +94,7 @@ const defaultProps = {
 };
 
 var numOfChildrens = 0
-var tabs = [];
+// var tabs = [];
 
 export const tabPannelContext = React.createContext({})
 
@@ -134,34 +131,32 @@ export default function TabGroup(props: Partial<TabPannelProps>) {
         tempNumOfChildrens = numOfChildrens;
       }
     }
-
-    if (numOfChildrens > 0 && tempNumOfChildrens - tabs.length == 1) {
-      tabs = [...tabs, 
-        <TabPanel value={value} index={numOfChildrens-1} key={numOfChildrens.toString()}></TabPanel>
+    if (numOfChildrens > 0 && tempNumOfChildrens - Gcontext["TabGroup"].tabs.length == 1) {
+      Gcontext["TabGroup"].tabs = [...Gcontext["TabGroup"].tabs, 
+        <TabPanel value={value} index={numOfChildrens-1} key={numOfChildrens.toString()} ></TabPanel>
       ]
     }
-    console.log("created tabs",tabs)
-    return tabs;
+    return Gcontext["TabGroup"].tabs;
   }
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const { connectors: { connect, drag }, actions: { setProp } } = useNode();
+  const Gcontext = useContext(globalContext)
 
   var context = {
     handleChange: (a) => handleChange(a),
-    tabs: {}
   }
 
   const handleChange = (newValue: number) => {
     console.log("Usao sam za broj: ",newValue)
     setValue(newValue);
     var updatedTabs = []
-    for(var i = 0; i < tabs.length; i++){
-      updatedTabs[i] = <TabPanel value={newValue} index={tabs[i].props.index} key={tabs[i].key}>{tabs[i].children}</TabPanel>
+    for(var i = 0; i < Gcontext["TabGroup"].tabs.length; i++){
+      updatedTabs[i] = <TabPanel value={newValue} index={Gcontext["TabGroup"].tabs[i].props.index} key={Gcontext["TabGroup"].tabs[i].key}>{Gcontext["TabGroup"].tabs[i].children}</TabPanel>
     }
-    tabs = []
-    tabs = updatedTabs
+    Gcontext["TabGroup"].tabs = []
+    Gcontext["TabGroup"].tabs = updatedTabs
   };
 
   context["handleChange"] = (a) => handleChange(a)

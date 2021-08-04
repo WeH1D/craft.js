@@ -9,6 +9,7 @@ import { useContext } from 'react';
 
 import { tabPannelContext } from '../TabPannel/TabGroup';
 import { createContext } from 'react';
+import { useNode } from '@craftjs/core';
 
 
 export type TabUIProps = {
@@ -85,8 +86,13 @@ export const TabUI = (props: Partial<TabUIProps>) => {
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
+
+  const { connectors: { connect, drag }, actions: { setProp } } = useNode();
+
   return (
-    <Tab label={label} {...assignProps(index)}  onClick = {() => func(index)}/>
+    <Tab 
+    ref={ref => connect(drag(ref))}
+    label={label} {...assignProps(index)}  onClick = {() => func(index)}/>
   );
 };
 

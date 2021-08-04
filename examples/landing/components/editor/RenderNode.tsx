@@ -136,9 +136,23 @@ export const RenderNode = ({ render }) => {
                   onMouseDown={(e: React.MouseEvent) => {
                     e.stopPropagation();
                     actions.delete(id);
-                    
-                    var temp =  Gcontext[props.contextName].values;
-                    delete temp[props.fieldName];
+                    if(Gcontext[props.contextName] != null){
+                      var temp =  Gcontext[props.contextName].values;
+                      delete temp[props.fieldName];
+                    }
+                    if("TabGroup" in Gcontext){
+                      if(Gcontext["TabGroup"].tabs.length > 0){
+                        for(var i = 0; i<Gcontext["TabGroup"].tabs.length; i++){
+                          if(Gcontext["TabGroup"].tabs[i].props.index == props.index)
+                          {
+                            console.log(Gcontext["TabGroup"].tabs[i])
+                            Gcontext["TabGroup"].tabs.splice(props.index, 1)
+                            var tabId = "simple-tabpanel-" + props.index
+                            document.getElementById(tabId).remove()
+                          }
+                        }
+                      }
+                    }
                   }}
                 >
                   <Delete />

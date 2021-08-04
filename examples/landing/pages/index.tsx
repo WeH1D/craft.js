@@ -17,6 +17,8 @@ import { Video } from '../components/selectors/Video';
 import  {Form}  from '../components/selectors/Form/Form';
 import {FormTextInput} from '../components/selectors/FormTextInput/FormTextInput';
 import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
+import  TabGroup  from 'components/selectors/TabPannel/TabGroup';
+import { TabUI } from 'components/selectors/Tab/TabUI';
 import { ResponsiveContainer } from 'components/selectors/ResponsiveContainer/ResponsiveContainer';
 
 const theme = createMuiTheme({
@@ -46,6 +48,15 @@ function App() {
     login: (a) => {login(a)},
   }
 
+  context["DataGrid"] = {
+    init: (a) => {return initDataGrid(a)},
+  }
+
+  context["TabGroup"] = {
+    tabs : []
+  }
+
+
   return (
     <ThemeProvider theme={theme}>
       <div className="h-full h-screen">
@@ -72,7 +83,9 @@ function App() {
             Video,
             Form,
             FormTextInput,
-            FloatingActionButton
+            FloatingActionButton,
+            TabGroup,
+            TabUI
           }}
           enabled={false}
           onRender={RenderNode}
@@ -82,7 +95,7 @@ function App() {
               <Element
                 canvas
                 is={Container}
-                width="80%"
+                width="90%"
                 height="500px"
                 background={{ r: 255, g: 255, b: 255, a: 1 }}
                 padding={['40', '40', '40', '40']}
@@ -107,6 +120,22 @@ function App() {
   function login(a){
     alert("logovano!!" + JSON.stringify(context["login"].values))
   }
+
+  function initDataGrid(a){
+    var rows = [
+      { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+      { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+      { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+      { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+      { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+      { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+      { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+      { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+      { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    ];
+    return rows
+  }
+
 }
 
 export default App;

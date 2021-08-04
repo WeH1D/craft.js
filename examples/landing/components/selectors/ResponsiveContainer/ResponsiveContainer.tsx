@@ -8,6 +8,8 @@ export type ResponsiveContainerProps = {
     background: Record<'r' | 'g' | 'b' | 'a', number>;
     color: Record<'r' | 'g' | 'b' | 'a', number>;
     width: string;
+    alignItems: string;
+    justifyContent: string;
     height: string;
     padding: string[];
     margin: string[];
@@ -33,6 +35,8 @@ const defaultProps = {
     color: { r: 0, g: 0, b: 0, a: 1 },
     shadow: 0,
     radius: 0,
+    alignItems: 'justify-content-start',
+    justifyContent: 'justify-content-start',
     xs: 0,
     sm: 0,
     md: 0,
@@ -54,24 +58,25 @@ export const ResponsiveContainer = (props: Partial<ResponsiveContainerProps>) =>
         shadow,
         radius,
         children,
+        justifyContent,
         xs, sm, md, lg, xl,
         rowOrCol
     } = props;
 
     var responsiveClasses = ""
-    // responsiveClasses += rowOrCol + " "
-    // if (rowOrCol == "col") {
+    responsiveClasses += rowOrCol + " " + justifyContent + " "
+    if (rowOrCol == "col") {
         if (xs != 0) responsiveClasses += "col-" + xs + " "
         if (sm != 0) responsiveClasses += "col-sm-" + sm + " "
         if (md != 0) responsiveClasses += "col-md-" + md + " "
         if (lg != 0) responsiveClasses += "col-lg-" + lg + " "
         if (xl != 0) responsiveClasses += "col-xl-" + xl + " "
-    //}
+    }
 
     const { connectors: { connect, drag } } = useNode();
 
     return (
-        <div className={"col " + responsiveClasses}
+        <div className={responsiveClasses}
             ref={ref => connect(drag(ref))}
             style={{
                 height: "auto", minHeight: "50px",

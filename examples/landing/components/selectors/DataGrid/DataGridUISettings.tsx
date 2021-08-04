@@ -7,6 +7,12 @@ import { ToolbarRadio } from 'components/editor/Toolbar/ToolbarRadio';
 export const DataGridUISettings = () => {
   return (
     <React.Fragment>
+        <ToolbarSection
+      title="Settings"
+      props={['initFunction']}
+    >
+      <ToolbarItem propKey="initFunction" type="text" label="init function name" full = {true} />
+    </ToolbarSection>
     <ToolbarSection
       title="Dimensions"
       props={['width', 'height']}

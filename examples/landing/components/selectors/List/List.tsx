@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { ContainerSettings } from './ContainerSettings';
+import { ListSettings } from './ListSettings';
+import List from '@material-ui/core/List';
 
 import { Resizer } from '../Resizer';
+import { ResponsiveContainer } from '../ResponsiveContainer/ResponsiveContainer';
 
 
-export type ContainerProps = {
+export type ListProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
   color: Record<'r' | 'g' | 'b' | 'a', number>;
   flexDirection: string;
@@ -23,6 +25,7 @@ export type ContainerProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
+  orientation: string;
 };
 
 const defaultProps = {
@@ -38,9 +41,10 @@ const defaultProps = {
   radius: 0,
   width: '100%',
   height: 'auto',
+  orientation: "flex-column"
 };
 
-export const Container = (props: Partial<ContainerProps>) => {
+export const ListUI = (props: Partial<ListProps>) => {
   props = {
     ...defaultProps,
     ...props,
@@ -57,16 +61,14 @@ export const Container = (props: Partial<ContainerProps>) => {
     shadow,
     radius,
     children,
+    orientation
   } = props;
 
   return (
     <Resizer
       propKey={{ width: 'width', height: 'height'}}
-      className = "row"
+        className = {"d-flex " + orientation}
       style={{
-        justifyContent,
-        alignItems,
-        flexDirection : flexDirection,
         background: `rgba(${Object.values(background)})`,
         color: `rgba(${Object.values(color)})`,
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
@@ -77,6 +79,7 @@ export const Container = (props: Partial<ContainerProps>) => {
             : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
         borderRadius: `${radius}px`,
         flex: fillSpace === 'yes' ? 1 : 'unset',
+        overflow: "auto",
       }}
     >
         {children}  
@@ -84,13 +87,14 @@ export const Container = (props: Partial<ContainerProps>) => {
   );
 };
 
-Container.craft = {
-  displayName: 'Container',
+ListUI.craft = {
+  displayName: 'List',
   props: defaultProps,
   rules: {
     canDrag: () => true,
+    canMoveIn: (incomingNode) => incomingNode.data.type != ResponsiveContainer
   },
   related: {
-    toolbar: ContainerSettings,
+    toolbar: ListSettings,
   },
 };

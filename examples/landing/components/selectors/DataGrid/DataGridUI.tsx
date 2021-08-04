@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNode } from '@craftjs/core'
 import { useContext } from 'react'
 import { formContext } from '../Form/Form'
@@ -28,6 +28,7 @@ export type DataGridUIProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
+  initFunction: string;
 };
 
 const defaultProps = {
@@ -46,6 +47,7 @@ const defaultProps = {
   radius: 0,
   width: '100',
   height: 'auto',
+  initFunction: "",
 };
 
 export const DataGridUI = (props: Partial<DataGridUIProps>) => {
@@ -68,12 +70,40 @@ export const DataGridUI = (props: Partial<DataGridUIProps>) => {
     shadow,
     radius,
     width,
-    height
+    height,
+    initFunction
   } = props;
 
   const { connectors: { connect, drag } } = useNode();
+  const [rows, setRows] = useState([])
+  const [columns, setColumns] = useState([])
   var context = useContext(formContext)
   const Gcontext = useContext(globalContext)
+
+  useEffect(() => {
+    var map = Gcontext["DataGrid"]
+    if(initFunction != "")
+    {
+      if(initFunction in map){
+        var mapRows = map[`${initFunction}`]()
+        setRows(mapRows)
+        var firstObject = mapRows.length > 0 ? mapRows[0] : ""
+        if(firstObject != ""){
+          var keys = Object.keys(firstObject)
+          var columns = keys.map((key) => {
+            return {
+              field: key,
+              headerName: key,
+              flex: 1,
+              editable: true,
+              renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
+            }
+          })
+          setColumns(columns)
+        } 
+      }
+    }
+  }, [initFunction])
 
   function changeHeaderName (params: GridColumnHeaderParams){
     return <InputBase
@@ -87,58 +117,48 @@ export const DataGridUI = (props: Partial<DataGridUIProps>) => {
   />
   }
 
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 120 },
-    {
-      field: 'firstName',
-      headerName: 'First name',
-      flex: 1,
-      editable: true,
-      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
-    },
-    {
-      field: 'lastName',
-      headerName: 'Last name',
-      flex: 1,
-      editable: true,
-      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
-    },
-    {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      flex: 1,
-      editable: true,
-      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
-    },
-    {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      flex: 1,
-      renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
-      valueGetter: (params: GridValueGetterParams) =>
-        `${params.getValue(params.id, 'firstName') || ''} ${
-          params.getValue(params.id, 'lastName') || ''
-        }`,
-    },
-  ];
-  
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
+  // const columns: GridColDef[] = [
+  //   { field: 'id', headerName: 'ID', width: 120 },
+  //   {
+  //     field: 'firstName',
+  //     headerName: 'First name',
+  //     flex: 1,
+  //     editable: true,
+  //     renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
+  //   },
+  //   {
+  //     field: 'lastName',
+  //     headerName: 'Last name',
+  //     flex: 1,
+  //     editable: true,
+  //     renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
+  //   },
+  //   {
+  //     field: 'age',
+  //     headerName: 'Age',
+  //     type: 'number',
+  //     flex: 1,
+  //     editable: true,
+  //     renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
+  //   },
+  //   {
+  //     field: 'fullName',
+  //     headerName: 'Full name',
+  //     description: 'This column has a value getter and is not sortable.',
+  //     sortable: false,
+  //     flex: 1,
+  //     renderHeader: (params: GridColumnHeaderParams) => changeHeaderName(params),
+  //     valueGetter: (params: GridValueGetterParams) =>
+  //       `${params.getValue(params.id, 'firstName') || ''} ${
+  //         params.getValue(params.id, 'lastName') || ''
+  //       }`,
+  //   },
+  // ];
 
   return (
-    <div style={{ 
+    <div 
+    ref={ref => connect(drag(ref))}
+    style={{ 
       height: 400, 
       width: '100%',
       justifyContent,
@@ -154,7 +174,6 @@ export const DataGridUI = (props: Partial<DataGridUIProps>) => {
         borderRadius: `${radius}px`,
         flex: fillSpace === 'yes' ? 1 : 'unset', }}>
       <DataGrid
-
         rows={rows}
         columns={columns}
         pageSize={5}

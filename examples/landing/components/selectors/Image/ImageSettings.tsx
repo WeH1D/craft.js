@@ -9,8 +9,9 @@ export const ImageSettings = () => {
          <ToolbarSection
         title="Link"
         props={['link']}
+        
       >
-        <ToolbarItem propKey="link" type="text" label="Image link" />
+        <ToolbarItem propKey="link" type="text" label="Image link" full={true}/>
       </ToolbarSection>
       <ToolbarSection
         title="Dimensions"

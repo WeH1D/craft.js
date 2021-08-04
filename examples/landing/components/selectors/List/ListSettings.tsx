@@ -3,40 +3,33 @@ import React from 'react';
 import { ToolbarSection, ToolbarItem } from '../../editor';
 import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 
-export const ResponsiveContainerSettings = () => {
+export const ListSettings = () => {
   return (
     <React.Fragment>
 
       <ToolbarSection
-        title="Responsiveness"
-        props={['xs', 'sm', 'md', 'lg', 'xl', "rowOrCol"]}
+        title="Dimensions"
+        props={['width', 'height']}
+        summary={({ width, height }: any) => {
+          return `${width || 0} x ${height || 0}`;
+        }}
       >
-       <ToolbarItem
-          propKey="rowOrCol"
+        <ToolbarItem propKey="width" type="text" label="Width" />
+        <ToolbarItem propKey="height" type="text" label="Height" />
+      </ToolbarSection>
+
+      <ToolbarSection
+        title="Settings"
+        props={['orientation']}
+      >
+         <ToolbarItem
+          propKey="orientation"
           type="radio"
-          label="Row/Column"
-          full={true}
+          label="Orientation"
         >
-          <ToolbarRadio value="row" label="Row" />
-          <ToolbarRadio value="col" label="Column" />
+          <ToolbarRadio value="flex-row" label="Horizontal" />
+          <ToolbarRadio value="flex-column" label="Vertical" />
         </ToolbarItem>
-         {/* 
-         Extra small screen / phone
-          xs: <576px
-        Small screen / phone
-          sm: ≥576px
-        Medium screen / tablet
-          md: ≥768px
-        Large screen / desktop
-          lg: ≥992px
-        Extra large screen / wide desktop
-          xl: ≥1200px
-           */}
-          <ToolbarItem propKey="xs" type="number" label="xs or default"/>
-          <ToolbarItem propKey="sm" type="number" label="sm"/>
-          <ToolbarItem propKey="md" type="number" label="md"/>
-          <ToolbarItem propKey="lg" type="number" label="lg"/>
-          <ToolbarItem propKey="xl" type="number" label="xl"/>
       </ToolbarSection>
 
       <ToolbarSection
@@ -82,10 +75,10 @@ export const ResponsiveContainerSettings = () => {
           }px`;
         }}
       >
-        <ToolbarItem propKey="margin" index={0} type="number" label="Top" />
-        <ToolbarItem propKey="margin" index={1} type="number" label="Right" />
-        <ToolbarItem propKey="margin" index={2} type="number" label="Bottom" />
-        <ToolbarItem propKey="margin" index={3} type="number" label="Left" />
+        <ToolbarItem propKey="margin" index={0} type="slider" label="Top" />
+        <ToolbarItem propKey="margin" index={1} type="slider" label="Right" />
+        <ToolbarItem propKey="margin" index={2} type="slider" label="Bottom" />
+        <ToolbarItem propKey="margin" index={3} type="slider" label="Left" />
       </ToolbarSection>
       <ToolbarSection
         title="Padding"
@@ -96,10 +89,10 @@ export const ResponsiveContainerSettings = () => {
           }px ${padding[3] || 0}px`;
         }}
       >
-        <ToolbarItem propKey="padding" index={0} type="number" label="Top" />
-        <ToolbarItem propKey="padding" index={1} type="number" label="Right" />
-        <ToolbarItem propKey="padding" index={2} type="number" label="Bottom" />
-        <ToolbarItem propKey="padding" index={3} type="number" label="Left" />
+        <ToolbarItem propKey="padding" index={0} type="slider" label="Top" />
+        <ToolbarItem propKey="padding" index={1} type="slider" label="Right" />
+        <ToolbarItem propKey="padding" index={2} type="slider" label="Bottom" />
+        <ToolbarItem propKey="padding" index={3} type="slider" label="Left" />
       </ToolbarSection>
       <ToolbarSection title="Decoration" props={['radius', 'shadow']}>
         <ToolbarItem
@@ -138,11 +131,9 @@ export const ResponsiveContainerSettings = () => {
           type="radio"
           label="Justify Content"
         >
-          <ToolbarRadio value="justify-content-start" label="Start" />
-          <ToolbarRadio value="justify-content-center" label="Center" />
-          <ToolbarRadio value="justify-content-end" label="End" />
-          <ToolbarRadio value="justify-content-between" label="Between" />
-          <ToolbarRadio value="justify-content-around" label="Around" />
+          <ToolbarRadio value="flex-start" label="Flex start" />
+          <ToolbarRadio value="center" label="Center" />
+          <ToolbarRadio value="flex-end" label="Flex end" />
         </ToolbarItem>
       </ToolbarSection>
     </React.Fragment>
