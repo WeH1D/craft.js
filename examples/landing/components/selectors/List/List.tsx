@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { Children, useContext, useEffect, useState } from 'react';
+import { Element, useEditor, useNode } from '@craftjs/core';
+import { Container } from '../Container';
+
 
 import { ListSettings } from './ListSettings';
-import List from '@material-ui/core/List';
-
-import { Resizer } from '../Resizer';
+import { globalContext } from 'utils/Context/context'
 import { ResponsiveContainer } from '../ResponsiveContainer/ResponsiveContainer';
-
+import  ListItem  from '../ListItem/ListItem';
+import  {Text}  from '../Text/index';
 
 export type ListProps = {
   background: Record<'r' | 'g' | 'b' | 'a', number>;
@@ -25,11 +27,11 @@ export type ListProps = {
   shadow: number;
   children: React.ReactNode;
   radius: number;
-  orientation: string;
+  initFunction: any;
 };
 
 const defaultProps = {
-  flexDirection: 'row',
+  flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   fillSpace: 'no',
@@ -40,16 +42,19 @@ const defaultProps = {
   shadow: 0,
   radius: 0,
   width: '100%',
-  height: 'auto',
-  orientation: "flex-column"
+  height: '300px',
+  initFunction: ""
 };
 
-export const ListUI = (props: Partial<ListProps>) => {
+var listItems = []
+
+export default function List(props: Partial<ListProps>) {
+
   props = {
     ...defaultProps,
     ...props,
   };
-  const {
+  var {
     flexDirection,
     alignItems,
     justifyContent,
@@ -61,38 +66,64 @@ export const ListUI = (props: Partial<ListProps>) => {
     shadow,
     radius,
     children,
-    orientation
+    initFunction
   } = props;
 
-  return (
-    <Resizer
-      propKey={{ width: 'width', height: 'height'}}
-        className = {"d-flex " + orientation}
-      style={{
-        background: `rgba(${Object.values(background)})`,
-        color: `rgba(${Object.values(color)})`,
-        padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
-        margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
-        boxShadow:
-          shadow === 0
-            ? 'none'
-            : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
-        borderRadius: `${radius}px`,
-        flex: fillSpace === 'yes' ? 1 : 'unset',
-        overflow: "auto",
-      }}
-    >
-        {children}  
-    </Resizer>
-  );
-};
 
-ListUI.craft = {
+
+  const Gcontext = useContext(globalContext)
+  const [showDefaultListItem, setshowDefaultListItem] = useState(true)
+
+  function mapData(dataItem, children){
+    var childrenList = []
+
+      for(var i = 0; i< children.length; i++){
+        var currentChild = children[i]
+        if(currentChild["mapFrom"] in dataItem)
+        {
+          var value = dataItem[currentChild["mapFrom"]]
+          if(currentChild["type"] == "text")
+          {
+            childrenList.push(<Text key={"child-" + i} {...currentChild} text={value}></Text>)
+          }
+        }
+      }
+      return childrenList
+  }
+
+  useEffect(() => {
+    var map = Gcontext["List"]
+    if(initFunction != "")
+    {
+      if(initFunction in map){
+        var data = map[`${initFunction}`]()
+        
+        listItems = data.map((dataItem, i)=> {
+          return (
+            <ListItem key={"dataItem-" + i} {...Gcontext["List"].parent}>
+              {mapData(dataItem, Gcontext["List"].children)}
+            </ListItem>
+          )
+        })
+        setshowDefaultListItem(false)
+      }
+    }
+
+  }, [initFunction])
+
+  return (
+    <ResponsiveContainer rowOrCol="row">
+      {showDefaultListItem ? children : listItems}
+    </ResponsiveContainer>
+
+  );
+}
+
+List.craft = {
   displayName: 'List',
   props: defaultProps,
   rules: {
     canDrag: () => true,
-    canMoveIn: (incomingNode) => incomingNode.data.type != ResponsiveContainer
   },
   related: {
     toolbar: ListSettings,

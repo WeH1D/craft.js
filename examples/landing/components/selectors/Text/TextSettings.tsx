@@ -7,6 +7,15 @@ import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 export const TextSettings = () => {
   return (
     <React.Fragment>
+        <ToolbarSection
+        title="Settings"
+        props={['mapTo', 'mapFrom']}
+      >
+         <ToolbarItem full={true} propKey="mapFrom" type="text" label="Map from data" />
+        <ToolbarItem full={true} propKey="mapTo" type="text" label="Map to property" />
+       
+      </ToolbarSection>
+      
       <ToolbarSection
         title="Typography"
         props={['fontSize', 'fontWeight', 'textAlign']}

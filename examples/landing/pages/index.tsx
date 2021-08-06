@@ -15,6 +15,7 @@ import { Custom2, Custom2VideoDrop } from '../components/selectors/Custom2';
 import { Custom3, Custom3BtnDrop } from '../components/selectors/Custom3';
 import { Video } from '../components/selectors/Video';
 import  {Form}  from '../components/selectors/Form/Form';
+import  List  from '../components/selectors/List/List';
 import {FormTextInput} from '../components/selectors/FormTextInput/FormTextInput';
 import { FloatingActionButton } from 'components/selectors/FloatingActionButton/FloatingActionButton';
 import  TabGroup  from 'components/selectors/TabPannel/TabGroup';
@@ -56,6 +57,12 @@ function App() {
     tabs : []
   }
 
+  context["List"] = {
+    init : (a) => {return initList(a)},
+    children: [],
+    parent: {}
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,7 +92,8 @@ function App() {
             FormTextInput,
             FloatingActionButton,
             TabGroup,
-            TabUI
+            TabUI,
+            List
           }}
           enabled={false}
           onRender={RenderNode}
@@ -116,7 +124,6 @@ function App() {
     alert("submitano!!" + JSON.stringify(context["registration"].values))
   }
   
-  
   function login(a){
     alert("logovano!!" + JSON.stringify(context["login"].values))
   }
@@ -134,6 +141,21 @@ function App() {
       { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
     ];
     return rows
+  }
+
+  function initList(a){
+    var data = [
+      { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
+      { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+      { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+      { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
+      { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+      { id: 6, lastName: 'Melisandre', firstName: "abc", age: 150 },
+      { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+      { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+      { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+    ];
+    return data
   }
 
 }

@@ -3,34 +3,52 @@ import React from 'react';
 import { ToolbarSection, ToolbarItem } from '../../editor';
 import { ToolbarRadio } from '../../editor/Toolbar/ToolbarRadio';
 
-export const ImageSettings = () => {
+export const ListItemSettings = () => {
   return (
     <React.Fragment>
-         <ToolbarSection
-        title="Settings"
-        props={['link', 'mapTo']}
-        
+
+      <ToolbarSection
+        title="Responsiveness"
+        props={['xs', 'sm', 'md', 'lg', 'xl', "rowOrCol"]}
       >
-        <ToolbarItem propKey="link" type="text" label="Image link" full={true}/>
-        <ToolbarItem full={true} propKey="mapTo" type="text" label="Map to" />
+       <ToolbarItem
+          propKey="rowOrCol"
+          type="radio"
+          label="Row/Column"
+          full={true}
+        >
+          <ToolbarRadio value="row" label="Row" />
+          <ToolbarRadio value="col" label="Column" />
+        </ToolbarItem>
+         {/* 
+         Extra small screen / phone
+          xs: <576px
+        Small screen / phone
+          sm: ≥576px
+        Medium screen / tablet
+          md: ≥768px
+        Large screen / desktop
+          lg: ≥992px
+        Extra large screen / wide desktop
+          xl: ≥1200px
+           */}
+          <ToolbarItem propKey="xs" type="number" label="xs or default"/>
+          <ToolbarItem propKey="sm" type="number" label="sm"/>
+          <ToolbarItem propKey="md" type="number" label="md"/>
+          <ToolbarItem propKey="lg" type="number" label="lg"/>
+          <ToolbarItem propKey="xl" type="number" label="xl"/>
       </ToolbarSection>
+
+
       <ToolbarSection
         title="Dimensions"
-        props={['width', 'height', 'objectFit']}
+        props={['width', 'height']}
         summary={({ width, height }: any) => {
           return `${width || 0} x ${height || 0}`;
         }}
       >
         <ToolbarItem propKey="width" type="text" label="Width" />
         <ToolbarItem propKey="height" type="text" label="Height" />
-
-        <ToolbarItem propKey="objectFit" type="radio" label="Image fit">
-          <ToolbarRadio value="fill" label="fill" />
-          <ToolbarRadio value="cover" label="cover" />
-          <ToolbarRadio value="contain" label="contain" />
-          <ToolbarRadio value="scale-down" label="cale-down" />
-          <ToolbarRadio value="none" label="none" />
-        </ToolbarItem>
       </ToolbarSection>
       <ToolbarSection
         title="Colors"

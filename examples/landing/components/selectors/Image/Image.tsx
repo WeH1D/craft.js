@@ -20,6 +20,7 @@ export type ImageProps = {
     radius: number;
     link: string;
     objectFit: any;
+    mapTo:string;
 };
 
 const defaultProps = {
@@ -32,7 +33,8 @@ const defaultProps = {
     link: "",
     width: "200",
     height: "200",
-    objectFit: "fill"
+    objectFit: "fill",
+    mapTo: ""
 };
 
 export const Image = (props: Partial<ImageProps>) => {
@@ -51,7 +53,8 @@ export const Image = (props: Partial<ImageProps>) => {
         link,
         width,
         height,
-        objectFit
+        objectFit,
+        mapTo
     } = props;
 
 

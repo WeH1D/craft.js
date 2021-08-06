@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { ContainerSettings } from './ContainerSettings';
 
 import { Resizer } from '../Resizer';
+import { Button } from '@material-ui/core';
+import { Video } from '../Video';
 
 
 export type ContainerProps = {
@@ -79,7 +81,7 @@ export const Container = (props: Partial<ContainerProps>) => {
         flex: fillSpace === 'yes' ? 1 : 'unset',
       }}
     >
-        {children}  
+        {children}
     </Resizer>
   );
 };

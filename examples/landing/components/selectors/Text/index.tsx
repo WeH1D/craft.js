@@ -12,17 +12,22 @@ export type TextProps = {
   shadow: number;
   text: string;
   margin: [string, string, string, string];
+  setFunc: any;
+  mapTo: string;
+  mapFrom: string;
+  type: string;
 };
 
-export const Text = ({
-  fontSize,
-  textAlign,
-  fontWeight,
-  color,
-  shadow,
-  text,
-  margin,
-}: Partial<TextProps>) => {
+export const Text = (props:  Partial<TextProps>) => {
+  props = {
+    ...props,
+  };
+  var {
+    setFunc,
+    mapTo,
+    mapFrom,
+    type
+  } = props;
   const {
     connectors: { connect },
     setProp,
@@ -30,10 +35,15 @@ export const Text = ({
   const { enabled } = useEditor((state) => ({
     enabled: state.options.enabled,
   }));
+
+  setFunc = (value) => {
+    setProp((prop) => (prop.text = value), 500);
+  }
+
   return (
     <ContentEditable
       innerRef={connect}
-      html={text} // innerHTML of the editable div
+      html={props.text} // innerHTML of the editable div
       disabled={!enabled}
       onChange={(e) => {
         setProp((prop) => (prop.text = e.target.value), 500);
@@ -41,12 +51,12 @@ export const Text = ({
       tagName="h2" // Use a custom HTML tag (uses a div by default)
       style={{
         width: '100%',
-        margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
-        color: `rgba(${Object.values(color)})`,
-        fontSize: `${fontSize}px`,
-        textShadow: `0px 0px 2px rgba(0,0,0,${(shadow || 0) / 100})`,
-        fontWeight,
-        textAlign,
+        margin: `${props.margin[0]}px ${props.margin[1]}px ${props.margin[2]}px ${props.margin[3]}px`,
+        color: `rgba(${Object.values(props.color)})`,
+        fontSize: `${props.fontSize}px`,
+        textShadow: `0px 0px 2px rgba(0,0,0,${(props.shadow || 0) / 100})`,
+        fontWeight : props.fontWeight,
+        textAlign : props.textAlign,
       }}
     />
   );
@@ -62,6 +72,7 @@ Text.craft = {
     margin: [0, 0, 0, 0],
     shadow: 0,
     text: 'Text',
+    type: "text"
   },
   related: {
     toolbar: TextSettings,

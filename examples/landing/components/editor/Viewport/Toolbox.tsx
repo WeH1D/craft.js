@@ -24,7 +24,7 @@ import { Button } from '../../selectors/Button';
 import { Container } from '../../selectors/Container';
 import { Text } from '../../selectors/Text';
 import { Image } from '../../selectors/Image/Image';
-import { ListUI } from '../../selectors/List/List';
+import List  from '../../selectors/List/List';
 import { Video } from '../../selectors/Video';
 import { Form } from 'components/selectors/Form/Form';
 import { FormTextInput } from 'components/selectors/FormTextInput/FormTextInput';
@@ -37,6 +37,7 @@ import { DataGridUI } from 'components/selectors/DataGrid/DataGridUI';
 import { TabUI } from 'components/selectors/Tab/TabUI';
 import TabGroup from 'components/selectors/TabPannel/TabGroup';
 import { ResponsiveContainer } from 'components/selectors/ResponsiveContainer/ResponsiveContainer';
+import ListItem from 'components/selectors/ListItem/ListItem';
 
 const ToolboxDiv = styled.div<{ enabled: boolean }>`
   transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
@@ -131,7 +132,7 @@ export const Toolbox = () => {
             )
           }>
           <Tooltip title="Form" placement="right">
-            <Item className="m-1 pb-1 cursor-pointer block" move>
+            <Item className="m-1 pb-1 curs or-pointer block" move>
               <FormSvg/>
             </Item>
           </Tooltip>
@@ -178,7 +179,7 @@ export const Toolbox = () => {
               ref,
               <Element
                 canvas
-                is={ListUI}
+                is={List}
                 background={{ r: 200, g: 230, b: 230, a: 1 }}
                 color={{ r: 0, g: 0, b: 0, a: 1 }}
                 height="300px"
@@ -190,6 +191,28 @@ export const Toolbox = () => {
           <Tooltip title="List" placement="right">
             <Item className="m-1 pb-1 cursor-pointer block" move>
               <ListSvg/>
+            </Item>
+          </Tooltip>
+        </div>
+
+        <div
+          ref={(ref) =>
+            create(
+              ref,
+              <Element
+                canvas
+                is={ListItem}
+                background={{ r: 230, g: 200, b: 200, a: 1 }}
+                color={{ r: 0, g: 0, b: 0, a: 1 }}
+                height="300px"
+                width="100%"
+              ></Element>
+            )
+          }
+        >
+          <Tooltip title="List" placement="right">
+            <Item className="m-1 pb-1 cursor-pointer block" move>
+              <h1>LI</h1>
             </Item>
           </Tooltip>
         </div>
@@ -280,7 +303,7 @@ export const Toolbox = () => {
         </div>
 
 
-        <div
+        <div 
           ref={(ref) =>
             create(ref, <Text fontSize="12" textAlign="left" text="Hi there" />)
           }
@@ -310,7 +333,7 @@ export const Toolbox = () => {
           </Tooltip>
         </div>
         
-        <div ref={(ref) => create(ref, <Video />)}>
+        <div ref={(ref) => create(ref, <Video height="10px" videoId="yG2UlXr9k9Q"/>)}>
           <Tooltip title="Video" placement="right">
             <Item className="m-1 pb-1 cursor-pointer block" move>
               <YoutubeSvg />

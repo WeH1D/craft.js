@@ -13,6 +13,7 @@ import { TabGroupSettings } from './TabGroupSettings';
 import { green, lightBlue, yellow } from '@material-ui/core/colors';
 import { colors } from '@material-ui/core';
 import { globalContext } from 'utils/Context/context'
+import { Form } from '../Form/Form';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -22,7 +23,6 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -136,6 +136,8 @@ export default function TabGroup(props: Partial<TabPannelProps>) {
         <TabPanel value={value} index={numOfChildrens-1} key={numOfChildrens.toString()} ></TabPanel>
       ]
     }
+
+
     return Gcontext["TabGroup"].tabs;
   }
 
@@ -154,6 +156,7 @@ export default function TabGroup(props: Partial<TabPannelProps>) {
     var updatedTabs = []
     for(var i = 0; i < Gcontext["TabGroup"].tabs.length; i++){
       updatedTabs[i] = <TabPanel value={newValue} index={Gcontext["TabGroup"].tabs[i].props.index} key={Gcontext["TabGroup"].tabs[i].key}>{Gcontext["TabGroup"].tabs[i].children}</TabPanel>
+      console.log("updated tabs props", updatedTabs[i].props)
     }
     Gcontext["TabGroup"].tabs = []
     Gcontext["TabGroup"].tabs = updatedTabs

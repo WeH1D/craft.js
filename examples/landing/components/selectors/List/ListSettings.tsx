@@ -7,6 +7,13 @@ export const ListSettings = () => {
   return (
     <React.Fragment>
 
+       <ToolbarSection
+        title="Settings"
+        props={['initFunction']}
+      >
+        <ToolbarItem propKey="initFunction" type="text" label="Init function" full={true}/>
+         
+      </ToolbarSection>
       <ToolbarSection
         title="Dimensions"
         props={['width', 'height']}
@@ -17,21 +24,6 @@ export const ListSettings = () => {
         <ToolbarItem propKey="width" type="text" label="Width" />
         <ToolbarItem propKey="height" type="text" label="Height" />
       </ToolbarSection>
-
-      <ToolbarSection
-        title="Settings"
-        props={['orientation']}
-      >
-         <ToolbarItem
-          propKey="orientation"
-          type="radio"
-          label="Orientation"
-        >
-          <ToolbarRadio value="flex-row" label="Horizontal" />
-          <ToolbarRadio value="flex-column" label="Vertical" />
-        </ToolbarItem>
-      </ToolbarSection>
-
       <ToolbarSection
         title="Colors"
         props={['background', 'color']}
